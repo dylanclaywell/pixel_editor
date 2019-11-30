@@ -3,40 +3,63 @@
 
 using namespace std;
 
-const float FPS = 60.0;
+class Canvas {
+};
 
-int main() {
-    ALLEGRO_DISPLAY *display = NULL;
-    ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-    ALLEGRO_TIMER *timer = NULL;
+class Main {
+    private:
+        ALLEGRO_DISPLAY *display;
+        ALLEGRO_TIMER *timer;
+        ALLEGRO_EVENT_QUEUE *event_queue;
 
-    bool redraw = true;
-    bool quit = false;
+        bool redraw;
+        bool quit;
+        const float FPS = 60.0;
 
+    public:
+        Main();
+        ~Main();
+
+        bool initialize(int, int);
+        void run();
+        void update();
+        void draw();
+};
+
+Main::Main() {
+}
+
+Main::~Main() {
+    al_destroy_display(display);
+    al_destroy_event_queue(event_queue);
+    al_destroy_timer(timer);
+}
+
+bool Main::initialize(int width, int height) {
     if (!al_init()) {
-        cout << "Error, could not initialize Allegro 5.\n";
-        return 1;
+        cout << "Error, could not initialize Allegro 5\n";
+        return false;
     }
 
     timer = al_create_timer(1.0 / FPS);
 
     if (!timer) {
         cout << "Error, could not create timer.\n";
-        return 1;
+        return false;
     }
 
     display = al_create_display(640, 480);
 
     if (!display) {
         cout << "Error, could not create display\n";
-        return 1;
+        return false;
     }
 
     event_queue = al_create_event_queue();
 
     if (!event_queue) {
         cout << "Error, could not create event queue\n";
-        return 1;
+        return false;
     }
 
     al_install_keyboard();
@@ -45,11 +68,18 @@ int main() {
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
+    redraw = true;
+    quit = false;
+    
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
 
     al_start_timer(timer);
 
+    return true;
+}
+
+void Main::run() {
     while (!quit) {
         ALLEGRO_EVENT event;
         
@@ -67,15 +97,49 @@ int main() {
         }
 
         if (redraw && al_is_event_queue_empty(event_queue)) {
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_flip_display();
+            draw();
             redraw = false;
         }
     }
+}
 
-    al_destroy_display(display);
-    al_destroy_event_queue(event_queue);
-    al_destroy_timer(timer);
+void Main::update() {
+}
+
+void Main::draw() {
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+
+
+
+    al_flip_display();
+}
+
+class Cursor {
+    private:
+        int x, y;
+
+    public:
+        int getX();
+        int getY();
+};
+
+int Cursor::getX() {
+    return x;
+}
+
+int Cursor::getY() {
+    return y;
+}
+
+int main() {
+    Main editor;
+
+    if (!editor.initialize(640, 480)) {
+        cout << "Error, could not initialize editor.\n";
+        return 1;
+    }
+
+    editor.run();
 
     return 0;
 }
