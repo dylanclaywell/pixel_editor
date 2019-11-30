@@ -1,5 +1,6 @@
 #include <iostream>
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
 
 #include "Main.h"
 
@@ -18,6 +19,10 @@ bool Main::initialize(int width, int height) {
     if (!al_init()) {
         cout << "Error, could not initialize Allegro 5\n";
         return false;
+    }
+
+    if (!al_init_primitives_addon()) {
+        cout << "Error, could not initialize Allegro 5 primitives addon\n";
     }
 
     timer = al_create_timer(1.0 / FPS);
@@ -49,7 +54,9 @@ bool Main::initialize(int width, int height) {
 
     redraw = true;
     quit = false;
-    
+   
+    cursor.initialize(32);
+ 
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
 
@@ -66,9 +73,14 @@ void Main::run() {
 
         switch(event.type) {
             case ALLEGRO_EVENT_TIMER:
+                update(event);
                 redraw = true;
                 break;
             case ALLEGRO_EVENT_KEY_DOWN:
+                handleKeyDown(event);
+                break;
+            case ALLEGRO_EVENT_KEY_UP:
+                handleKeyUp(event);
                 break;
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
                 quit = true;
@@ -82,13 +94,62 @@ void Main::run() {
     }
 }
 
-void Main::update() {
+void Main::update(ALLEGRO_EVENT event) {
+    if (pressedKeys[ALLEGRO_KEY_UP]) {
+        cursor.moveUp();
+    } else if (pressedKeys[ALLEGRO_KEY_DOWN]) {
+        cursor.moveDown();
+    }
+
+    if (pressedKeys[ALLEGRO_KEY_LEFT]) {
+        cursor.moveLeft();
+    } else if (pressedKeys[ALLEGRO_KEY_RIGHT]) {
+        cursor.moveRight();
+    }
+}
+
+void Main::handleKeyDown(ALLEGRO_EVENT event) {
+    cout << event.keyboard.keycode << endl;
+
+    switch (event.keyboard.keycode) {
+        case ALLEGRO_KEY_UP:
+            pressedKeys[ALLEGRO_KEY_UP] = true;
+            break;
+        case ALLEGRO_KEY_DOWN:
+            pressedKeys[ALLEGRO_KEY_DOWN] = true;
+            break;
+        case ALLEGRO_KEY_LEFT:
+            pressedKeys[ALLEGRO_KEY_LEFT] = true;
+            break;
+        case ALLEGRO_KEY_RIGHT:
+            pressedKeys[ALLEGRO_KEY_RIGHT] = true;
+            break;
+    }
+}
+
+void Main::handleKeyUp(ALLEGRO_EVENT event) {
+    cout << event.keyboard.keycode << endl;
+
+    switch (event.keyboard.keycode) {
+        case ALLEGRO_KEY_UP:
+            pressedKeys[ALLEGRO_KEY_UP] = false;
+            break;
+        case ALLEGRO_KEY_DOWN:
+            pressedKeys[ALLEGRO_KEY_DOWN] = false;
+            break;
+        case ALLEGRO_KEY_LEFT:
+            pressedKeys[ALLEGRO_KEY_LEFT] = false;
+            break;
+        case ALLEGRO_KEY_RIGHT:
+            pressedKeys[ALLEGRO_KEY_RIGHT] = false;
+            break;
+    }
 }
 
 void Main::draw() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
-
+    cursor.draw();
 
     al_flip_display();
 }

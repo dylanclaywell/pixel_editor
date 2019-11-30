@@ -3,15 +3,20 @@
 
 #include <allegro5/allegro.h>
 
+#include "Cursor.h"
+
 class Main {
     private:
         ALLEGRO_DISPLAY *display;
         ALLEGRO_TIMER *timer;
         ALLEGRO_EVENT_QUEUE *event_queue;
 
+        Cursor cursor;
+
         bool redraw;
         bool quit;
         const float FPS = 60.0;
+        bool pressedKeys[ALLEGRO_KEY_MAX] = {false};
 
     public:
         Main();
@@ -19,7 +24,9 @@ class Main {
 
         bool initialize(int, int);
         void run();
-        void update();
+        void update(ALLEGRO_EVENT);
+        void handleKeyDown(ALLEGRO_EVENT);
+        void handleKeyUp(ALLEGRO_EVENT);
         void draw();
 };
 

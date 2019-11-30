@@ -3,7 +3,7 @@ TARGET := pixel_editor
 CXX := g++
 CXXFLAGS := -std=c++11 -g -Wall
 
-LIBS := -lallegro
+LIBS := -lallegro -lallegro_primitives
 
 SRC := $(shell find ./src -name "*.cpp")
 OBJECTS  := $(patsubst %.c, %.o, $(SRC))
