@@ -17,9 +17,9 @@ void Cursor::draw() {
     al_draw_rectangle(
         x * pixelSize, 
         y * pixelSize, 
-        (x * pixelSize) + 32, 
-        (y * pixelSize) + 32, 
-        al_map_rgb(255, 255, 255), 
+        (x * pixelSize) + 2, 
+        (y * pixelSize) + 2, 
+        al_map_rgb(255, 0, 0), 
         1
     );
 }

@@ -4,6 +4,7 @@
 #include <allegro5/allegro.h>
 
 #include "Cursor.h"
+#include "Canvas.h"
 
 class Main {
     private:
@@ -12,6 +13,7 @@ class Main {
         ALLEGRO_EVENT_QUEUE *event_queue;
 
         Cursor cursor;
+        Canvas canvas;
 
         bool redraw;
         bool quit;

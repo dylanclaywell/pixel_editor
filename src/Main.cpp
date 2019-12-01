@@ -54,7 +54,8 @@ bool Main::initialize(int width, int height) {
 
     redraw = true;
     quit = false;
-   
+  
+    canvas.initialize(32, 32, display); 
     cursor.initialize(32);
  
     al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -149,6 +150,7 @@ void Main::handleKeyUp(ALLEGRO_EVENT event) {
 void Main::draw() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
+    canvas.draw();
     cursor.draw();
 
     al_flip_display();
