@@ -6,7 +6,7 @@ class Cursor {
         int x, y, pixelSize;
 
     public:
-        bool initialize(int);
+        bool initialize(int, int, int);
         void update();
         void draw();
 

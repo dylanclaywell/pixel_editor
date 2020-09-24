@@ -11,7 +11,7 @@ OBJECTS  := $(patsubst %.c, %.o, $(SRC))
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $(LIBS) -o ./build/$(TARGET) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o ./build/$(TARGET) $(OBJECTS) $(LIBS)
 
 clean:
 	rm -f $(OBJECTS)

@@ -6,8 +6,10 @@
 
 using namespace std;
 
-bool Cursor::initialize(int cursorSize) {
-    pixelSize = 32;
+bool Cursor::initialize(int cursorSize, int xx, int yy) {
+    pixelSize = cursorSize;
+    x = xx;
+    y = yy;
 
     return true;
 }
@@ -17,8 +19,8 @@ void Cursor::draw() {
     al_draw_rectangle(
         x * pixelSize, 
         y * pixelSize, 
-        (x * pixelSize) + 2, 
-        (y * pixelSize) + 2, 
+        (x * pixelSize) + 1, 
+        (y * pixelSize) + 1, 
         al_map_rgb(255, 0, 0), 
         1
     );
